@@ -1,0 +1,29 @@
+name: publish
+on:
+  schedule:
+    - cron: "47 16 * * *"   # 12:47 ET during DST / 11:47 ET in winter (~18:47 Milan)
+  workflow_dispatch:
+    inputs:
+      date: {description: "YYYY-MM-DD to publish (default today)", required: false}
+      dry_run: {description: "1 = check only, do not post", required: false, default: "0"}
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Publish today's approved post
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          POST_DATE: ${{ inputs.date }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: python publish.py
+      - name: Record result
+        run: |
+          git config user.name "publisher-bot"; git config user.email "publisher-bot@users.noreply.github.com"
+          git add queue/schedule.json
+          git diff --cached --quiet || (git commit -m "published $(date -u +%F)" && git push)
