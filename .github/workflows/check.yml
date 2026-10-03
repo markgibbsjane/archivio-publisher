@@ -1,0 +1,15 @@
+name: check-connection
+on:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the Instagram key works
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          curl -sS "https://graph.instagram.com/v25.0/me?fields=user_id,username,account_type&access_token=$IG_TOKEN"
+          echo
+          curl -sS "https://graph.instagram.com/v25.0/$IG_USER_ID/content_publishing_limit?access_token=$IG_TOKEN"
