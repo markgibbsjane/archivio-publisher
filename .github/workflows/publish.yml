@@ -1,11 +1,12 @@
 name: publish
 on:
   schedule:
-    - cron: "47 16 * * *"   # 12:47 ET during DST / 11:47 ET in winter (~18:47 Milan)
+    - cron: "47 16-21 * * *"   # hourly 12:47-5:47pm ET in DST (11:47-4:47 in winter); first run posts, later runs skip
   workflow_dispatch:
     inputs:
       date: {description: "YYYY-MM-DD to publish (default today)", required: false}
       dry_run: {description: "1 = check only, do not post", required: false, default: "0"}
+concurrency: publish
 permissions:
   contents: write
 jobs:
