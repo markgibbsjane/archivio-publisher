@@ -66,5 +66,20 @@
     "date": "2026-11-15",
     "post": "in-montagna",
     "approved": true
+  },
+  {
+    "date": "2026-11-17",
+    "post": "paninari-ancona",
+    "approved": true
+  },
+  {
+    "date": "2026-11-19",
+    "post": "paninari-notte",
+    "approved": true
+  },
+  {
+    "date": "2026-11-22",
+    "post": "il-disegno-1987",
+    "approved": true
   }
 ]
